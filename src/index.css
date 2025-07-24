@@ -1,0 +1,17 @@
+@import url("https://fonts.googleapis.com/css2?family=Lexend:wght@100..900&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  font-family: "Lexend", sans-serif;
+}
+
+.swal2-confirm-button {
+  @apply bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded ml-2;
+}
+
+.swal2-cancel-button {
+  @apply bg-gray-300 hover:bg-gray-400 text-gray-800 font-medium py-2 px-4 rounded mr-2;
+}
