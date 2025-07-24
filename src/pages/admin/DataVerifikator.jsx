@@ -10,7 +10,7 @@ const DataVerifikator = () => {
     const fetchVerifikators = async () => {
       try {
         const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/user/verifikator-list", {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/verifikator-list`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setVerifikators(response.data);

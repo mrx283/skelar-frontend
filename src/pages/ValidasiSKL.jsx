@@ -12,7 +12,7 @@ const ValidasiSKL = () => {
     e.preventDefault();
     try {
       setMessage("");
-      const res = await axios.get(`http://localhost:5000/api/skl/validasi/${nomorSKL}`);
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/skl/validasi/${nomorSKL}`);
       setResult(res.data.data);
     } catch (err) {
       setResult(null);

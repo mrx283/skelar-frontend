@@ -11,7 +11,7 @@ const VerifikasiQRCode = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`http://192.168.100.9:5000/api/rsa/${id}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}:5000/api/rsa/${id}`);
         setData(res.data);
         setValid(true);
       } catch (error) {

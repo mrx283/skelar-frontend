@@ -31,7 +31,7 @@ const DataQRAdmin = () => {
   const fetchSKL = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/skl", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/skl`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setData(res.data);
@@ -43,7 +43,7 @@ const DataQRAdmin = () => {
   const fetchAdminList = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/user/admin-list", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/admin-list`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setAdminList(res.data);
@@ -56,7 +56,7 @@ const DataQRAdmin = () => {
   const fetchQRData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/rsa/list", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}:5000/api/rsa/list`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const map = {};
@@ -92,7 +92,7 @@ const DataQRAdmin = () => {
     try {
       setLoadingId(skl.id);
       const payload = { ...skl, skl_id: skl.id, admin_id: adminId };
-      const res = await axios.post("http://localhost:5000/api/rsa/encrypt", payload, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/rsa/encrypt`, payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
       setQRDataMap((prev) => ({
@@ -134,7 +134,7 @@ const DataQRAdmin = () => {
   const downloadPDF = async (skl) => {
     try {
       const res = await axios.post(
-        `http://localhost:5000/api/pdf/generate/${skl.id}`,
+        `${import.meta.env.VITE_API_URL}/api/pdf/generate/${skl.id}`,
         {
           nama_siswa: skl.nama_siswa,
           nisn: skl.nisn,

@@ -23,7 +23,7 @@ const FormEnkripsi = () => {
     const fetchAdmins = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get("http://localhost:5000/api/user/admin-list", {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/admin-list`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -54,7 +54,7 @@ const FormEnkripsi = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:5000/api/rsa/encrypt", formData, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/rsa/encrypt`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
         },

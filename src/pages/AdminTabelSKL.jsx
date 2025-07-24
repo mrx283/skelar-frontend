@@ -13,7 +13,7 @@ const AdminTabelSKL = () => {
   const fetchData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get("http://localhost:5000/api/skl", {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}:5000/api/skl`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -50,7 +50,7 @@ const AdminTabelSKL = () => {
     if (result.isConfirmed) {
       try {
         const token = localStorage.getItem("token");
-        await axios.delete(`http://localhost:5000/api/skl/${id}`, {
+        await axios.delete(`${import.meta.env.VITE_API_URL}/api/skl/${id}`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

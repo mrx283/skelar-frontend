@@ -20,7 +20,7 @@ const EditSKLAdmin = () => {
     const fetchSKL = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`http://localhost:5000/api/skl/${id}`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}:5000/api/skl/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setForm(res.data);
@@ -42,7 +42,7 @@ const EditSKLAdmin = () => {
     e.preventDefault();
     try {
       const token = localStorage.getItem("token");
-      await axios.put(`http://localhost:5000/api/skl/${id}`, form, {
+      await axios.put(`${import.meta.env.VITE_API_URL}:5000/api/skl/${id}`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
       navigate("/admin/dashboard/skl");
