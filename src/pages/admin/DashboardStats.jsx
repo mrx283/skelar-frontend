@@ -13,6 +13,7 @@ const DashboardStats = () => {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStats(res.data);
+        console.log(res.data);
       } catch (err) {
         console.error("Gagal mengambil statistik dashboard:", err);
       }

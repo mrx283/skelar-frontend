@@ -56,7 +56,7 @@ const DataQRAdmin = () => {
   const fetchQRData = async () => {
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}:5000/api/rsa/list`, {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/rsa/list`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const map = {};
