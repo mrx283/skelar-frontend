@@ -14,6 +14,7 @@ const DataQRAdmin = () => {
   const navigate = useNavigate();
 
   const [popup, setPopup] = useState({ show: false, message: "", type: "" });
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     fetchSKL();
@@ -173,6 +174,16 @@ const DataQRAdmin = () => {
 
       {error && <p className="text-red-600 mb-3">{error}</p>}
 
+      <div className="mb-4">
+        <input
+          type="text"
+          placeholder="🔍 Cari nama, NISN, atau nomor SKL..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="w-full md:w-1/2 px-4 py-2 border rounded-md shadow-sm focus:ring-2 focus:ring-cyan-500 focus:outline-none"
+        />
+      </div>
+
       <div className="overflow-x-auto rounded shadow">
         <table className="min-w-full bg-white border">
           <thead className="bg-cyan-700 text-white text-sm">
@@ -187,64 +198,69 @@ const DataQRAdmin = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((skl) => (
-              <React.Fragment key={skl.id}>
-                <tr className="hover:bg-gray-50 text-sm">
-                  <td className="border p-2">{skl.nama_siswa}</td>
-                  <td className="border p-2">{skl.nisn}</td>
-                  <td className="border p-2">{skl.nomor_skl}</td>
-                  <td className="border p-2">{skl.asal_sekolah}</td>
-                  <td className="border p-2">{skl.tahun_lulus}</td>
-                  <td className="border p-2 w-48">
-                    {!qrDataMap[skl.id] ? (
-                      <select value={selectedAdmin[skl.id] || ""} onChange={(e) => handleAdminChange(skl.id, e.target.value)} className="text-sm w-full border rounded px-2 py-1">
-                        <option value="">Pilih Admin</option>
-                        {adminList.map((admin) => (
-                          <option key={admin.id} value={admin.id}>
-                            {admin.name}
-                          </option>
-                        ))}
-                      </select>
-                    ) : (
-                      <p className="text-green-700 font-medium">✅ Sudah dibuat oleh {qrDataMap[skl.id]?.admin_name || "Admin"}</p>
-                    )}
-                  </td>
-                  <td className="border p-2 space-y-2">
-                    <button
-                      disabled={loadingId === skl.id || qrDataMap[skl.id]}
-                      onClick={() => generateEncryptedQR(skl)}
-                      className={`w-full text-sm px-3 py-1 rounded text-white ${qrDataMap[skl.id] ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}`}
-                    >
-                      {loadingId === skl.id ? "⏳ Proses..." : "🔐 Buat QR"}
-                    </button>
-                    <button
-                      disabled={!qrDataMap[skl.id]}
-                      onClick={() => downloadPDF(skl)}
-                      className={`w-full text-sm px-3 py-1 rounded text-white ${qrDataMap[skl.id] ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"}`}
-                    >
-                      📥 Download SKL (PDF)
-                    </button>
-                  </td>
-                </tr>
-                {qrDataMap[skl.id] && (
-                  <tr>
-                    <td colSpan="7" className="border-t p-3 bg-slate-50">
-                      <div className="grid md:grid-cols-2 gap-4 text-xs">
-                        <div>
-                          <strong>Hasil Enkripsi:</strong>
-                          <pre className="bg-white border mt-1 p-2 rounded break-all overflow-x-auto">{qrDataMap[skl.id].encrypted}</pre>
-                        </div>
-                        <div>
-                          <strong>QR Code (URL):</strong>
-                          <QRCode value={`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`} size={128} />
-                          <p className="text-xs mt-1 break-all text-blue-700">{`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`}</p>
-                        </div>
-                      </div>
+            {data
+              .filter(
+                (item) =>
+                  item.nama_siswa.toLowerCase().includes(search.toLowerCase()) || item.nisn.toLowerCase().includes(search.toLowerCase()) || item.nomor_skl.toLowerCase().includes(search.toLowerCase())
+              )
+              .map((skl) => (
+                <React.Fragment key={skl.id}>
+                  <tr className="hover:bg-gray-50 text-sm">
+                    <td className="border p-2">{skl.nama_siswa}</td>
+                    <td className="border p-2">{skl.nisn}</td>
+                    <td className="border p-2">{skl.nomor_skl}</td>
+                    <td className="border p-2">{skl.asal_sekolah}</td>
+                    <td className="border p-2">{skl.tahun_lulus}</td>
+                    <td className="border p-2 w-48">
+                      {!qrDataMap[skl.id] ? (
+                        <select value={selectedAdmin[skl.id] || ""} onChange={(e) => handleAdminChange(skl.id, e.target.value)} className="text-sm w-full border rounded px-2 py-1">
+                          <option value="">Pilih Admin</option>
+                          {adminList.map((admin) => (
+                            <option key={admin.id} value={admin.id}>
+                              {admin.name}
+                            </option>
+                          ))}
+                        </select>
+                      ) : (
+                        <p className="text-green-700 font-medium">✅ Sudah dibuat oleh {qrDataMap[skl.id]?.admin_name || "Admin"}</p>
+                      )}
+                    </td>
+                    <td className="border p-2 space-y-2">
+                      <button
+                        disabled={loadingId === skl.id || qrDataMap[skl.id]}
+                        onClick={() => generateEncryptedQR(skl)}
+                        className={`w-full text-sm px-3 py-1 rounded text-white ${qrDataMap[skl.id] ? "bg-gray-400 cursor-not-allowed" : "bg-green-600 hover:bg-green-700"}`}
+                      >
+                        {loadingId === skl.id ? "⏳ Proses..." : "🔐 Buat QR"}
+                      </button>
+                      <button
+                        disabled={!qrDataMap[skl.id]}
+                        onClick={() => downloadPDF(skl)}
+                        className={`w-full text-sm px-3 py-1 rounded text-white ${qrDataMap[skl.id] ? "bg-blue-600 hover:bg-blue-700" : "bg-gray-400 cursor-not-allowed"}`}
+                      >
+                        📥 Download SKL (PDF)
+                      </button>
                     </td>
                   </tr>
-                )}
-              </React.Fragment>
-            ))}
+                  {qrDataMap[skl.id] && (
+                    <tr>
+                      <td colSpan="7" className="border-t p-3 bg-slate-50">
+                        <div className="grid md:grid-cols-2 gap-4 text-xs">
+                          <div>
+                            <strong>Hasil Enkripsi:</strong>
+                            <pre className="bg-white border mt-1 p-2 rounded break-all overflow-x-auto">{qrDataMap[skl.id].encrypted}</pre>
+                          </div>
+                          <div>
+                            <strong>QR Code (URL):</strong>
+                            <QRCode value={`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`} size={128} />
+                            <p className="text-xs mt-1 break-all text-blue-700">{`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`}</p>
+                          </div>
+                        </div>
+                      </td>
+                    </tr>
+                  )}
+                </React.Fragment>
+              ))}
           </tbody>
         </table>
       </div>
