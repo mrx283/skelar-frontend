@@ -36,7 +36,6 @@ function App() {
         <Route path="skl/edit/:id" element={<EditSKLAdmin />} />
         <Route path="qr" element={<DataQRAdmin />} />
         <Route path="form-enkripsi" element={<FormEnkripsi />} />
-        <Route path="verifikator" element={<DataVerifikator />} />
       </Route>
     </Routes>
   );
