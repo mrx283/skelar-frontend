@@ -34,10 +34,6 @@ const DashboardStats = () => {
           <h3 className="text-xl font-semibold text-gray-700">Jumlah QR yang Sudah Dibuat</h3>
           <p className="text-4xl font-bold text-cyan-700 mt-2">{stats.totalQR}</p>
         </div>
-        <div className="bg-white p-6 rounded shadow">
-          <h3 className="text-xl font-semibold text-gray-700">Verifikator Pernah Login</h3>
-          <p className="text-4xl font-bold text-cyan-700 mt-2">{stats.totalLoginVerifikator}</p>
-        </div>
       </div>
     </div>
   );
