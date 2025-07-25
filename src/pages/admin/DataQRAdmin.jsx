@@ -236,8 +236,8 @@ const DataQRAdmin = () => {
                         </div>
                         <div>
                           <strong>QR Code (URL):</strong>
-                          <QRCode value={`http://192.168.100.9:5173/verifikasi/${skl.id}`} size={128} />
-                          <p className="text-xs mt-1 break-all text-blue-700">{`http://192.168.100.9:5173/verifikasi/${skl.id}`}</p>
+                          <QRCode value={`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`} size={128} />
+                          <p className="text-xs mt-1 break-all text-blue-700">{`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`}</p>
                         </div>
                       </div>
                     </td>
