@@ -9,7 +9,7 @@ const DashboardStats = () => {
     const fetchStats = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/skl/dashboard/stats`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/skl/dashboard/stats`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         setStats(res.data);
