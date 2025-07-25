@@ -13,7 +13,6 @@ const AdminDashboardLayout = () => {
     { label: "📊 Dashboard", path: "/admin/dashboard" },
     { label: "📄 Data SKL", path: "/admin/dashboard/skl" },
     { label: "🔐 Data QR", path: "/admin/dashboard/qr" },
-    { label: "👥 Data Verifikator", path: "/admin/dashboard/verifikator" },
   ];
 
   const isActive = (path) => location.pathname === path;

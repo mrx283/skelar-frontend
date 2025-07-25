@@ -2,7 +2,6 @@
 import { Routes, Route } from "react-router-dom";
 import LoginAdmin from "./pages/LoginAdmin";
 import RegisterAdmin from "./pages/RegisterAdmin";
-import DataVerifikator from "./pages/admin/DataVerifikator";
 import VerifikasiQRCode from "./pages/verifikasi/VerifikasiQRCode";
 
 // halaman home
