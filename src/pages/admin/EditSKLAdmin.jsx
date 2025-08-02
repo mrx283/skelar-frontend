@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 const EditSKLAdmin = () => {
   const { id } = useParams();
@@ -45,9 +46,24 @@ const EditSKLAdmin = () => {
       await axios.put(`${import.meta.env.VITE_API_URL}/api/skl/${id}`, form, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      navigate("/admin/dashboard/skl");
+
+      // ✅ Tampilkan popup SweetAlert2
+      Swal.fire({
+        icon: "success",
+        title: "Berhasil!",
+        text: "Data berhasil disimpan!",
+        timer: 1500,
+        showConfirmButton: false,
+      }).then(() => {
+        // Arahkan setelah popup ditutup
+        navigate("/admin/dashboard/skl");
+      });
     } catch (err) {
-      setMessage("❌ Gagal menyimpan perubahan");
+      Swal.fire({
+        icon: "error",
+        title: "Gagal!",
+        text: "Terjadi kesalahan saat menyimpan data",
+      });
     }
   };
 
