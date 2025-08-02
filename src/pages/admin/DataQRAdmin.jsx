@@ -5,11 +5,11 @@ import QRCode from "react-qr-code";
 
 const DataQRAdmin = () => {
   const [data, setData] = useState([]);
-  const [adminList, setAdminList] = useState([]);
   const [selectedAdmin, setSelectedAdmin] = useState({});
   const [error, setError] = useState("");
   const [qrDataMap, setQRDataMap] = useState({});
   const [loadingId, setLoadingId] = useState(null);
+  const [loggedInAdmin, setLoggedInAdmin] = useState(null);
 
   const navigate = useNavigate();
 
@@ -18,8 +18,8 @@ const DataQRAdmin = () => {
 
   useEffect(() => {
     fetchSKL();
-    fetchAdminList();
     fetchQRData();
+    fetchLoggedInAdmin(); // Tambahan
   }, []);
 
   const showPopup = (message, type = "success") => {
@@ -27,6 +27,19 @@ const DataQRAdmin = () => {
     setTimeout(() => {
       setPopup({ show: false, message: "", type: "" });
     }, 1500);
+  };
+
+  const fetchLoggedInAdmin = async () => {
+    try {
+      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/me`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
+      setLoggedInAdmin(res.data);
+    } catch (err) {
+      console.error("❌ Gagal ambil data admin login", err);
+    }
   };
 
   const fetchSKL = async () => {
@@ -38,19 +51,6 @@ const DataQRAdmin = () => {
       setData(res.data);
     } catch (err) {
       setError("❌ Gagal mengambil data SKL");
-    }
-  };
-
-  const fetchAdminList = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/admin-list`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setAdminList(res.data);
-    } catch (err) {
-      console.log(err);
-      console.error("Gagal ambil admin:", err);
     }
   };
 
@@ -76,23 +76,15 @@ const DataQRAdmin = () => {
     }
   };
 
-  const handleAdminChange = (sklId, adminId) => {
-    setSelectedAdmin((prev) => ({
-      ...prev,
-      [sklId]: adminId,
-    }));
-  };
-
   const generateEncryptedQR = async (skl) => {
-    const adminId = selectedAdmin[skl.id];
-    if (!adminId) {
-      showPopup("⚠️ Silakan pilih admin terlebih dahulu!", "error");
+    if (!loggedInAdmin) {
+      showPopup("❌ Gagal mendapatkan data admin login!", "error");
       return;
     }
     if (!window.confirm("Yakin ingin mengenkripsi dan membuat QR untuk data ini?")) return;
     try {
       setLoadingId(skl.id);
-      const payload = { ...skl, skl_id: skl.id, admin_id: adminId };
+      const payload = { ...skl, skl_id: skl.id, admin_id: loggedInAdmin.id };
       const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/rsa/encrypt`, payload, {
         headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
       });
@@ -101,7 +93,8 @@ const DataQRAdmin = () => {
         [skl.id]: {
           encrypted: res.data.encrypted,
           qrCode: res.data.qrCode,
-          admin_id: adminId,
+          admin_id: loggedInAdmin.id,
+          admin_name: loggedInAdmin.name,
         },
       }));
     } catch (err) {
@@ -212,17 +205,12 @@ const DataQRAdmin = () => {
                     <td className="border p-2">{skl.asal_sekolah}</td>
                     <td className="border p-2">{skl.tahun_lulus}</td>
                     <td className="border p-2 w-48">
-                      {!qrDataMap[skl.id] ? (
-                        <select value={selectedAdmin[skl.id] || ""} onChange={(e) => handleAdminChange(skl.id, e.target.value)} className="text-sm w-full border rounded px-2 py-1">
-                          <option value="">Pilih Admin</option>
-                          {adminList.map((admin) => (
-                            <option key={admin.id} value={admin.id}>
-                              {admin.name}
-                            </option>
-                          ))}
-                        </select>
-                      ) : (
+                      {qrDataMap[skl.id] ? (
                         <p className="text-green-700 font-medium">✅ Sudah dibuat oleh {qrDataMap[skl.id]?.admin_name || "Admin"}</p>
+                      ) : loggedInAdmin ? (
+                        <p className="text-cyan-700 font-medium">👤 Admin: {loggedInAdmin.name}</p>
+                      ) : (
+                        <p className="text-gray-500">Memuat admin...</p>
                       )}
                     </td>
                     <td className="border p-2 space-y-2">

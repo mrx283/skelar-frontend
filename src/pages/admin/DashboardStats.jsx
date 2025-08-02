@@ -29,7 +29,7 @@ const DashboardStats = () => {
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
         <div className="bg-white p-4 sm:p-6 rounded shadow">
           <h3 className="text-lg sm:text-xl font-semibold text-gray-700">Jumlah SKL yang Terdata</h3>
-          <p className="text-3xl sm:text-4xl font-bold text-cyan-700 mt-2">{stats.totalSKL}</p>
+          <p className="text-3xl sm:text-4xl font-bold text-cyan-700  mt-2">{stats.totalSKL}</p>
         </div>
         <div className="bg-white p-4 sm:p-6 rounded shadow">
           <h3 className="text-lg sm:text-xl font-semibold text-gray-700">Jumlah QR yang Sudah Dibuat</h3>

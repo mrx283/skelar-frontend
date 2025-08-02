@@ -13,32 +13,34 @@ const FormEnkripsi = () => {
     admin_id: "",
   });
 
-  const [adminList, setAdminList] = useState([]);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  // Ambil list verifikator saat halaman dimuat
+  // Ambil data admin login saat pertama kali render
   useEffect(() => {
-    const fetchAdmins = async () => {
+    const fetchLoggedInAdmin = async () => {
       try {
         const token = localStorage.getItem("token");
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/admin-list`, {
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
         });
-        setAdminList(res.data);
+
+        setFormData((prev) => ({
+          ...prev,
+          admin_id: res.data.id,
+        }));
       } catch (err) {
-        console.error("Gagal ambil verifikator:", err);
-        setError("Gagal ambil data verifikator.");
+        console.error("❌ Gagal ambil data admin login:", err);
+        setError("Gagal mengambil data admin login.");
       }
     };
 
-    fetchAdmins();
+    fetchLoggedInAdmin();
   }, []);
 
-  // Handle input form
   const handleChange = (e) => {
     setFormData({
       ...formData,
@@ -46,7 +48,6 @@ const FormEnkripsi = () => {
     });
   };
 
-  // Submit form
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
@@ -79,15 +80,6 @@ const FormEnkripsi = () => {
         <input type="text" name="asal_sekolah" placeholder="Asal Sekolah" className="input" onChange={handleChange} />
         <input type="text" name="tahun_lulus" placeholder="Tahun Lulus" className="input" onChange={handleChange} />
         <input type="text" name="skl_id" placeholder="SKL ID" className="input" onChange={handleChange} />
-
-        <select name="verifikator_id" onChange={handleChange} className="input">
-          <option value="">-- Pilih Verifikator --</option>
-          {adminList.map((v) => (
-            <option key={v.id} value={v.id}>
-              {v.name} ({v.email})
-            </option>
-          ))}
-        </select>
 
         <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 disabled:opacity-50" disabled={loading}>
           {loading ? "Mengenkripsi..." : "Buat QR"}
