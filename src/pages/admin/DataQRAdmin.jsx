@@ -91,6 +91,10 @@ const DataQRAdmin = () => {
       cancelButtonColor: "#d33",
       confirmButtonText: "Ya, buat!",
       cancelButtonText: "Batal",
+      allowOutsideClick: false, // Tidak bisa klik di luar popup
+      allowEscapeKey: false, // Tidak bisa tutup dengan ESC
+      allowEnterKey: true, // Masih bisa konfirmasi dengan Enter
+      backdrop: true,
     });
 
     if (!confirm.isConfirmed) return;
