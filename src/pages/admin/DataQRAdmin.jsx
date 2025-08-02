@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import QRCode from "react-qr-code";
+import Swal from "sweetalert2";
 
 const DataQRAdmin = () => {
   const [data, setData] = useState([]);
-  const [selectedAdmin, setSelectedAdmin] = useState({});
   const [error, setError] = useState("");
   const [qrDataMap, setQRDataMap] = useState({});
   const [loadingId, setLoadingId] = useState(null);
@@ -81,7 +81,19 @@ const DataQRAdmin = () => {
       showPopup("❌ Gagal mendapatkan data admin login!", "error");
       return;
     }
-    if (!window.confirm("Yakin ingin mengenkripsi dan membuat QR untuk data ini?")) return;
+
+    const confirm = await Swal.fire({
+      title: "Konfirmasi",
+      text: "Yakin ingin mengenkripsi dan membuat QR untuk data ini?",
+      icon: "question",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "Ya, buat!",
+      cancelButtonText: "Batal",
+    });
+
+    if (!confirm.isConfirmed) return;
     try {
       setLoadingId(skl.id);
       const payload = { ...skl, skl_id: skl.id, admin_id: loggedInAdmin.id };
