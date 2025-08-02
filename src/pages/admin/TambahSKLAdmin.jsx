@@ -54,12 +54,13 @@ const TambahSKLAdmin = () => {
 
   return (
     <div className="max-w-2xl mx-auto mt-10 p-6 bg-white shadow-2xl rounded-xl border border-gray-200">
-      <div className="mb-6">
+      <div className="mb-6 flex items-center justify-between">
+        <h2 className="text-3xl font-bold text-cyan-800">➕ Tambah SKL</h2>
         <button onClick={() => navigate("/admin/dashboard/skl")} className="bg-gray-400 hover:bg-gray-600 text-white px-4 py-2 rounded-md transition">
           🔙 Kembali ke Dashboard
         </button>
       </div>
-      <h2 className="text-3xl font-bold text-cyan-800 mb-6">➕ Tambah SKL</h2>
+
       <form onSubmit={handleSubmit} className="space-y-5">
         {["nama_siswa", "nisn", "nomor_skl", "asal_sekolah", "tahun_lulus"].map((field) => (
           <div key={field}>
