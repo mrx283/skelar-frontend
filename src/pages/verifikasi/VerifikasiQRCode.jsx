@@ -1,12 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { useParams, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import axios from "axios";
 
 const VerifikasiQRCode = () => {
-  const location = useLocation();
-  const encrypted = decodeURIComponent(location.pathname.replace("/verifikasi/", ""));
-  console.log("Pathname:", location.pathname);
-  console.log("Encrypted (tanpa decodeURIComponent):", encrypted);
+  const { id } = useParams();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [valid, setValid] = useState(false);
@@ -14,7 +11,7 @@ const VerifikasiQRCode = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/rsa/${encrypted}`);
+        const res = await axios.get(`${import.meta.env.VITE_API_URL}/api/rsa/${id}`);
         setData(res.data);
         setValid(true);
       } catch (error) {
@@ -25,7 +22,7 @@ const VerifikasiQRCode = () => {
     };
 
     fetchData();
-  }, [encrypted]);
+  }, [id]);
 
   if (loading) {
     return (

@@ -26,7 +26,7 @@ function App() {
       {/* halaman utama */}
       <Route path="/" element={<Home />} />
 
-      <Route path="/verifikasi/*" element={<VerifikasiQRCode />} />
+      <Route path="/verifikasi/:id" element={<VerifikasiQRCode />} />
 
       {/* 🖥️ Admin Dashboard Layout */}
       <Route path="/admin/dashboard" element={<AdminDashboardLayout />}>
