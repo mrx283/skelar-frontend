@@ -142,6 +142,12 @@ const DataQRAdmin = () => {
   // };
 
   const downloadPDF = async (skl) => {
+    const qrData = qrDataMap[skl.id];
+
+    if (!qrData) {
+      alert("❌ QR belum tersedia");
+      return;
+    }
     try {
       const res = await axios.post(
         `${import.meta.env.VITE_API_URL}/api/pdf/generate/${skl.id}`,
@@ -150,6 +156,7 @@ const DataQRAdmin = () => {
           nisn: skl.nisn,
           no_skl: skl.nomor_skl,
           tahun_lulus: skl.tahun_lulus,
+          encrypted_text: qrData.encrypted,
         },
         {
           responseType: "blob",
@@ -256,8 +263,8 @@ const DataQRAdmin = () => {
                           </div>
                           <div>
                             <strong>QR Code (URL):</strong>
-                            <QRCode value={`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`} size={128} />
-                            <p className="text-xs mt-1 break-all text-blue-700">{`https://skelar-frontend.vercel.app/verifikasi/${skl.id}`}</p>
+                            <QRCode value={`http://192.168.100.9:5173/verifikasi/${qrDataMap[skl.id]?.encrypted}`} size={128} />
+                            <p className="text-xs mt-1 break-all text-blue-700">{`http://192.168.100.9:5173/verifikasi/${qrDataMap[skl.id]?.encrypted}`}</p>
                           </div>
                         </div>
                       </td>
