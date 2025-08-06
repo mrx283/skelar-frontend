@@ -3,9 +3,10 @@ import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 const VerifikasiQRCode = () => {
+  console.log("Pathname:", location.pathname);
+  console.log("Encrypted (tanpa decodeURIComponent):", encrypted);
   const location = useLocation();
-  const encrypted = decodeURIComponent(location.pathname.replace("/verifikasi/", ""));
-  const { id } = useParams();
+  const encrypted = location.pathname.replace("/verifikasi/", "");
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [valid, setValid] = useState(false);
